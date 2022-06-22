@@ -33,6 +33,11 @@ const router = createRouter({
 			name: "Bookmarks",
 			component: () => import("../views/Bookmarks.vue"),
 		},
+		{
+			path: "/profile",
+			name: "Profile",
+			component: () => import("../views/Profile.vue"),
+		},
 	],
 });
 
