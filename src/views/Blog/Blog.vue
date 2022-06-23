@@ -45,7 +45,7 @@ export default {
 			const config = {
 				headers: {
 					Authorization: `Bearer ${
-						JSON.parse(localStorage.getItem("access"))?.accessToken
+						JSON.parse(localStorage.getItem("access"))?.token.bearer
 					}`,
 				},
 			};
@@ -65,7 +65,7 @@ export default {
 		const config = {
 			headers: {
 				Authorization: `Bearer ${
-					JSON.parse(localStorage.getItem("access"))?.accessToken
+					JSON.parse(localStorage.getItem("access"))?.token.bearer
 				}`,
 			},
 		};
@@ -114,7 +114,7 @@ export default {
 				</button>
 			</div>
 			<form
-				class="flex flex-col gap-2 flex-1 h-[26.25rem] animate-fadeIn"
+				class="flex flex-col gap-2 flex-1 h-[85vh] animate-fadeIn"
 				@submit.prevent="createPost"
 				v-if="
 					!this.error &&

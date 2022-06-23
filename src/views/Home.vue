@@ -47,7 +47,7 @@ export default {
 </script>
 
 <template>
-	<h1 class="text-4xl font-bold text-center">Home</h1>
+	<h1 class="text-4xl font-bold text-center">Dashboard</h1>
 	<p class="text-center text-sm animate-fadeIn" v-if="name">
 		Welcome back
 		<span class="font-semibold animate-wiggle inline-block">{{ name }}</span>

@@ -15,7 +15,7 @@ export default {
 		const config = {
 			headers: {
 				Authorization: `Bearer ${
-					JSON.parse(localStorage.getItem("access"))?.accessToken
+					JSON.parse(localStorage.getItem("access"))?.token.bearer
 				}`,
 			},
 		};

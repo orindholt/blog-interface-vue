@@ -8,6 +8,9 @@ import {
 	faArrowRightFromBracket,
 	faPen,
 	faTrashCan,
+	faRss,
+	faBookBookmark,
+	faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-icons";
 
@@ -16,7 +19,10 @@ library.add(
 	faBookmarkRegular,
 	faArrowRightFromBracket,
 	faPen,
-	faTrashCan
+	faTrashCan,
+	faRss,
+	faBookBookmark,
+	faUser
 );
 
 const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);

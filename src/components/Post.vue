@@ -24,7 +24,7 @@ export default {
 			const config = {
 				headers: {
 					Authorization: `Bearer ${
-						JSON.parse(localStorage.getItem("access"))?.accessToken
+						JSON.parse(localStorage.getItem("access"))?.token.bearer
 					}`,
 				},
 			};
@@ -53,7 +53,7 @@ export default {
 			const config = {
 				headers: {
 					Authorization: `Bearer ${
-						JSON.parse(localStorage.getItem("access"))?.accessToken
+						JSON.parse(localStorage.getItem("access"))?.token.bearer
 					}`,
 				},
 			};
@@ -70,7 +70,7 @@ export default {
 		const config = {
 			headers: {
 				Authorization: `Bearer ${
-					JSON.parse(localStorage.getItem("access"))?.accessToken
+					JSON.parse(localStorage.getItem("access"))?.token.bearer
 				}`,
 			},
 		};
@@ -103,17 +103,19 @@ export default {
 <template>
 	<div class="animate-fadeIn">
 		<div
-			class="relative hover:scale-[1.02] transition-transform"
+			class="relative hover:scale-[1.02] transition-transform h-full"
 			v-if="this.authorName"
 		>
 			<RouterLink
 				:to="'/blog/' + this.post._id"
 				class="w-full h-full rounded-sm shadow-sm overflow-hidden"
 			>
-				<li class="text-center bg-white p-4 flex flex-col gap-1">
+				<li
+					class="text-center bg-white p-4 flex flex-col justify-between gap-1 min-h-[160px]"
+				>
 					<p class="uppercase">
 						published
-						<span class="font-medium text-salmon">{{
+						<span class="font-medium text-blue">{{
 							rt(this.post.created)
 						}}</span>
 					</p>

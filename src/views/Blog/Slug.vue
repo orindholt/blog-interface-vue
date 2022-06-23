@@ -20,7 +20,7 @@ export default {
 			const config = {
 				headers: {
 					Authorization: `Bearer ${
-						JSON.parse(localStorage.getItem("access"))?.accessToken
+						JSON.parse(localStorage.getItem("access"))?.token.bearer
 					}`,
 				},
 			};
@@ -50,7 +50,7 @@ export default {
 		const config = {
 			headers: {
 				Authorization: `Bearer ${
-					JSON.parse(localStorage.getItem("access"))?.accessToken
+					JSON.parse(localStorage.getItem("access"))?.token.bearer
 				}`,
 			},
 		};
@@ -83,7 +83,7 @@ export default {
 
 <template>
 	<div v-if="this.data" class="animate-fadeIn bg-white p-4 shadow-sm">
-		<h3 class="text-salmon font-semibold uppercase text-center">
+		<h3 class="text-blue font-semibold uppercase text-center">
 			{{ rt(this.data.created.slice(0, 10)) }}
 		</h3>
 		<h1 class="text-4xl font-bold text-center">{{ this.data.title }}</h1>

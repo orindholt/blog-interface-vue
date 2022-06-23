@@ -21,9 +21,12 @@ export default {
 			};
 			axios
 				.post(`${baseApi}/auth/token`, reqBody)
-				.then(({ data: { token } }) => {
+				.then(({ data: { token, expiration } }) => {
 					const userObject = {
-						accessToken: token,
+						token: {
+							bearer: token,
+							expiration,
+						},
 						username: this.username,
 					};
 					this.setUserData(userObject);
@@ -72,7 +75,7 @@ export default {
 			/>
 			<button
 				type="submit"
-				class="bg-salmon text-white rounded-sm max-w-fit px-4 shadow-sm hover:scale-110 transition-all text-lg font-semibold"
+				class="bg-blue text-white rounded-sm max-w-fit px-4 shadow-sm hover:scale-110 transition-all text-lg font-semibold"
 			>
 				Log in
 			</button>

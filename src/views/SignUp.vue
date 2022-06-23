@@ -40,7 +40,10 @@ export default {
 						.post(`${baseApi}/auth/token`, reqBody)
 						.then(({ data: { token } }) => {
 							const userObject = {
-								accessToken: token,
+								token: {
+									bearer: token,
+									expiration,
+								},
 								username: this.username,
 							};
 							this.setUserData(userObject);
@@ -104,7 +107,7 @@ export default {
 			</select>
 			<button
 				type="submit"
-				class="bg-salmon text-white rounded-sm max-w-fit px-4 shadow-sm hover:scale-110 transition-transform text-lg font-semibold"
+				class="bg-blue text-white rounded-sm max-w-fit px-4 shadow-sm hover:scale-110 transition-transform text-lg font-semibold"
 			>
 				Sign up
 			</button>

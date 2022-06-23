@@ -18,12 +18,39 @@ export default {
 				localStorage.removeItem("access");
 			}
 		},
+		checkToken: function (start) {
+			if (!start) {
+				clearInterval(checkInterval);
+				return;
+			}
+			if (
+				this.data &&
+				this.data.token.expiration <=
+					parseInt(Date.now().toString().slice(0, 10))
+			)
+				localStorage.removeItem("access");
+			var checkInterval = setInterval(() => {
+				console.log(this.data);
+				if (this.data) {
+					console.log(`${this.data.token.expiration} - ${Date.now()}`);
+				}
+			}, 5000);
+		},
 	},
 	provide() {
 		return {
 			userData: computed(() => this.data),
 			setUserData: this.setData,
 		};
+	},
+	watch: {
+		data(newData) {
+			this.checkToken(newData ? true : false);
+		},
+	},
+	created() {
+		console.log(import.meta.env.VITE_API_URL);
+		this.checkToken(true);
 	},
 };
 </script>
@@ -33,7 +60,7 @@ export default {
 		<Navbar />
 	</header>
 
-	<main class="pt-10 px-10 min-h-screen flex flex-col">
+	<main class="pt-10 pl-48 pr-8 min-h-screen flex flex-col">
 		<RouterView />
 	</main>
 </template>

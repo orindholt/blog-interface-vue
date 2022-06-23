@@ -7,16 +7,15 @@ export default {
 			type: String,
 			required: true,
 		},
-		classes: "",
 	},
 };
 </script>
 
 <template>
-	<li :class="this.classes">
+	<li>
 		<RouterLink
 			:to="anchor"
-			class="h-full w-full flex items-center justify-center font-semibold"
+			class="h-full w-full flex items-center justify-center font-semibold gap-2"
 		>
 			<slot></slot>
 		</RouterLink>

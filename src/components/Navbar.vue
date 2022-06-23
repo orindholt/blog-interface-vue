@@ -1,8 +1,9 @@
 <script>
 import axios from "axios";
 import RouteLink from "./RouteLink.vue";
+import GridIconVue from "./icons/GridIcon.vue";
 export default {
-	components: { RouteLink },
+	components: { RouteLink, GridIconVue },
 	inject: ["userData"],
 	data() {
 		return {
@@ -14,7 +15,7 @@ export default {
 		const config = {
 			headers: {
 				Authorization: `Bearer ${
-					JSON.parse(localStorage.getItem("access"))?.accessToken
+					JSON.parse(localStorage.getItem("access"))?.token.bearer
 				}`,
 			},
 		};
@@ -32,27 +33,35 @@ export default {
 
 <template>
 	<nav
-		class="text-lg fixed left-0 right-0 top-0 flex items-center text-black h-10 px-10 z-50 bg-gray bg-opacity-50 backdrop-blur-sm"
+		class="text-lg fixed left-0 top-0 bottom-0 text-white w-40 py-10 px-3 z-50 bg-blue"
 	>
-		<ul class="flex w-full font-bold gap-10">
-			<RouteLink anchor="/" classes="hover:text-darkGray">Home</RouteLink>
-			<RouteLink anchor="/blog" classes="hover:text-darkGray">Blog</RouteLink>
-			<RouteLink anchor="/bookmarks" classes="hover:text-darkGray"
-				>Bookmarks</RouteLink
+		<ul class="flex flex-col items-start h-full w-full font-bold gap-7">
+			<RouteLink anchor="/" class="hover:opacity-100 opacity-50"
+				><GridIconVue size="18" /> Dashboard</RouteLink
 			>
-			<div class="flex items-center ml-auto gap-10" v-if="!this.userData">
-				<RouteLink anchor="/login" classes="hover:text-darkGray"
+			<RouteLink anchor="/blog" class="hover:opacity-100 opacity-50"
+				><font-awesome-icon icon="fa-solid fa-rss" /> Blog</RouteLink
+			>
+			<RouteLink anchor="/bookmarks" class="hover:opacity-100 opacity-50"
+				><font-awesome-icon icon="fa-solid fa-book-bookmark" />
+				Bookmarks</RouteLink
+			>
+			<div
+				class="flex flex-col items-center gap-7 w-full mt-auto"
+				v-if="!this.userData"
+			>
+				<RouteLink anchor="/login" class="hover:opacity-100 opacity-50"
 					>Login</RouteLink
 				>
 				<RouteLink
 					anchor="/signup"
-					classes="bg-salmon text-gray hover:scale-105 transition-transform rounded-md w-24"
+					class="bg-orange hover:scale-105 transition-transform rounded-md py-1 w-full"
 					>Sign Up</RouteLink
 				>
 			</div>
-			<div class="ml-auto" v-else>
-				<RouteLink anchor="/profile" classes="hover:text-darkGray"
-					>Profile</RouteLink
+			<div v-else>
+				<RouteLink anchor="/profile" class="hover:opacity-100 opacity-50"
+					><font-awesome-icon icon="fa-solid fa-user" /> Profile</RouteLink
 				>
 			</div>
 		</ul>
