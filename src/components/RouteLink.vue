@@ -1,20 +1,23 @@
 <script>
-import { RouterLink } from 'vue-router';
+import { RouterLink } from "vue-router";
 export default {
-  props: {
-    anchor: {
-      type: String,
-      required: true
-    },
-    classes: ""
-  }
-}
+	components: { RouterLink },
+	props: {
+		anchor: {
+			type: String,
+			required: true,
+		},
+	},
+};
 </script>
 
 <template>
-  <li :class="this.classes">
-    <RouterLink :to="anchor" class="h-full w-full flex items-center justify-center font-semibold">
-      <slot></slot>
-    </RouterLink>
-  </li>
+	<li>
+		<RouterLink
+			:to="anchor"
+			class="h-full w-full flex items-center justify-center font-semibold gap-2"
+		>
+			<slot></slot>
+		</RouterLink>
+	</li>
 </template>

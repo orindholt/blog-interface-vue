@@ -3,28 +3,33 @@ import axios from "axios";
 import Post from "../components/Post.vue";
 import { RouterLink } from "vue-router";
 export default {
+	components: { Post, RouterLink },
 	data() {
 		return {
 			error: null,
 			data: [],
+			loggedIn: false,
 		};
 	},
 	created() {
 		const config = {
 			headers: {
 				Authorization: `Bearer ${
-					JSON.parse(localStorage.getItem("access")).accessToken
+					JSON.parse(localStorage.getItem("access"))?.token.bearer
 				}`,
 			},
 		};
 		axios
-			.get("http://localhost:2020/api/v1/saves", config)
+			.get(`${import.meta.env.VITE_API_URL}/api/v1/saves`, config)
 			.then(res => {
+				this.loggedIn = true;
 				res.data.forEach(id => {
-					axios.get(`http://localhost:2020/api/v1/posts/${id}`).then(res => {
-						this.data.push(res.data);
-						console.log(this.data);
-					});
+					axios
+						.get(`${import.meta.env.VITE_API_URL}/api/v1/posts/${id}`)
+						.then(res => {
+							this.data.push(res.data);
+							console.log(this.data);
+						});
 				});
 			})
 			.catch(err => {
@@ -32,7 +37,6 @@ export default {
 				this.error = err.response.status;
 			});
 	},
-	components: { Post },
 };
 </script>
 
@@ -52,13 +56,24 @@ export default {
 	</div>
 	<div
 		class="text-center my-auto pb-20 flex flex-col gap-2 animate-delayFadeIn opacity-0"
-		v-else
+		v-else-if="!data.length && loggedIn"
 	>
 		<h2 class="text-2xl">You don't seem to have bookmarks yet!</h2>
 		<RouterLink
-			class="max-w-fit bg-black text-white rounded-sm py-1 px-4 mx-auto text-xl"
+			class="max-w-fit px-4 py-1 bg-black text-white rounded-sm font-medium mx-auto text-lg hover:scale-105 transition-transform"
 			to="/blog"
 			>Blog</RouterLink
+		>
+	</div>
+	<div
+		class="text-center my-auto pb-20 flex flex-col gap-2 animate-delayFadeIn opacity-0"
+		v-else
+	>
+		<h2 class="text-2xl">You need to be logged in to bookmark posts!</h2>
+		<RouterLink
+			class="max-w-fit px-4 py-1 bg-black text-white rounded-sm font-medium mx-auto text-lg hover:scale-105 transition-transform"
+			to="/login"
+			>Login</RouterLink
 		>
 	</div>
 </template>
