@@ -108,7 +108,7 @@ export default {
 
 <template>
 	<div
-		class="relative hover:scale-[1.02] transition-transform h-full animate-fadeIn"
+		class="relative hover:scale-[1.02] transition-transform h-full animate-fadeIn opacity-0"
 		v-if="this.authorName"
 	>
 		<RouterLink

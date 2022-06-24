@@ -2,7 +2,6 @@
 import axios from "axios";
 import dateToRealtime from "../../util/dateToRealtime";
 import { RouterLink } from "vue-router";
-const baseApi = "${import.meta.env.VITE_API_URL}";
 export default {
 	components: { RouterLink },
 	data() {
@@ -58,10 +57,11 @@ export default {
 			},
 		};
 		axios
-			.get(`${baseApi}/api/v1/posts/${this.$route.params.id}`)
+			.get(
+				`${import.meta.env.VITE_API_URL}/api/v1/posts/${this.$route.params.id}`
+			)
 			.then(res => {
 				this.data = res.data;
-				console.log(res.data);
 				axios
 					.get(
 						`${import.meta.env.VITE_API_URL}/api/v1/users/${res.data.author}`
