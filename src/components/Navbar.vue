@@ -21,7 +21,7 @@ export default {
 		};
 		if (this.userData) {
 			axios
-				.get("http://localhost:2020/api/v1/profile", config)
+				.get(`${import.meta.env.VITE_API_URL}/api/v1/profile`, config)
 				.then(() => {
 					this.loggedIn = true;
 				})

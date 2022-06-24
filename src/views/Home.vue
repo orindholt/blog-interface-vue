@@ -8,6 +8,7 @@ export default {
 			error: null,
 			name: null,
 			data: null,
+			profileData: null,
 			nextReq: null,
 		};
 	},
@@ -27,7 +28,7 @@ export default {
 		},
 		getPosts: function () {
 			axios
-				.get("http://localhost:2020/api/v1/posts?offset=0&limit=4")
+				.get(`${import.meta.env.VITE_API_URL}/api/v1/posts?offset=0&limit=4`)
 				.then(res => {
 					this.data = res.data;
 					this.nextReq = res.data.next;
@@ -39,8 +40,17 @@ export default {
 		},
 	},
 	created() {
-		if (localStorage.getItem("access"))
-			this.name = JSON.parse(localStorage.getItem("access")).username;
+		const config = {
+			headers: {
+				Authorization: `Bearer ${
+					JSON.parse(localStorage.getItem("access"))?.token.bearer
+				}`,
+			},
+		};
+		axios
+			.get(`${import.meta.env.VITE_API_URL}/api/v1/profile`, config)
+			.then(res => (this.name = res.data.username))
+			.catch(err => (this.error = err?.response?.status));
 		this.getPosts();
 	},
 };
@@ -53,7 +63,7 @@ export default {
 		<span class="font-semibold animate-wiggle inline-block">{{ name }}</span>
 	</p>
 	<h2 class="text-3xl font-semibold text-center mt-10">Latest Posts</h2>
-	<div v-if="data" class="flex flex-col">
+	<div v-if="data" class="flex flex-col pb-4">
 		<ul class="grid grid-cols-2 gap-6 my-4">
 			<Post
 				v-for="(post, index) in data.result"
@@ -66,7 +76,7 @@ export default {
 			v-if="nextReq"
 			@click="getMorePosts"
 			type="button"
-			class="max-w-fit px-4 py-1 bg-black text-white rounded-sm font-medium mx-auto text-lg hover:scale-105 transition-transform animate-fadeIn"
+			class="max-w-fit px-4 py-1 bg-black text-white rounded-sm font-medium mx-auto text-lg hover:scale-105 transition-transform opacity-0 animate-delayFadeIn"
 		>
 			View more
 		</button>

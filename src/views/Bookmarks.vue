@@ -20,14 +20,16 @@ export default {
 			},
 		};
 		axios
-			.get("http://localhost:2020/api/v1/saves", config)
+			.get(`${import.meta.env.VITE_API_URL}/api/v1/saves`, config)
 			.then(res => {
 				this.loggedIn = true;
 				res.data.forEach(id => {
-					axios.get(`http://localhost:2020/api/v1/posts/${id}`).then(res => {
-						this.data.push(res.data);
-						console.log(this.data);
-					});
+					axios
+						.get(`${import.meta.env.VITE_API_URL}/api/v1/posts/${id}`)
+						.then(res => {
+							this.data.push(res.data);
+							console.log(this.data);
+						});
 				});
 			})
 			.catch(err => {

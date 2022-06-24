@@ -1,7 +1,6 @@
 <script>
 import axios from "axios";
 import { RouterLink } from "vue-router";
-const baseApi = "http://localhost:2020";
 export default {
 	components: { RouterLink },
 	inject: ["setUserData"],
@@ -31,20 +30,17 @@ export default {
 				password: this.password,
 				role: this.role,
 			};
-			console.log(reqBody);
 			axios
-				.post(`${baseApi}/api/v1/users`, reqBody)
+				.post(`${import.meta.env.VITE_API_URL}/api/v1/users`, reqBody)
 				.then(() => {
-					console.log(reqBody);
 					axios
-						.post(`${baseApi}/auth/token`, reqBody)
+						.post(`${import.meta.env.VITE_API_URL}/auth/token`, reqBody)
 						.then(({ data: { token } }) => {
 							const userObject = {
 								token: {
 									bearer: token,
 									expiration,
 								},
-								username: this.username,
 							};
 							this.setUserData(userObject);
 							this.$router.push({ path: "/" });
@@ -66,7 +62,7 @@ export default {
 			@submit.prevent="createUser"
 			class="flex flex-col gap-3 items-center max-w-xs w-full"
 		>
-			<p v-if="error" class="text-red-500 text-center">
+			<p v-if="error" class="text-red text-center">
 				{{
 					error === 400
 						? "You are missing a username or password!"
@@ -81,7 +77,7 @@ export default {
 				id="username"
 				placeholder="Username"
 				class="border border-gray px-2 py-1 rounded-sm w-full"
-				:class="{ '!border-red-500': error === 400 || error === 401 }"
+				:class="{ '!border-red': error === 400 || error === 401 }"
 			/>
 			<input
 				type="password"
@@ -89,7 +85,7 @@ export default {
 				id="password"
 				placeholder="Password"
 				class="border border-gray px-2 py-1 rounded-sm w-full"
-				:class="{ '!border-red-500': error === 400 || error === 401 }"
+				:class="{ '!border-red': error === 400 || error === 401 }"
 			/>
 			<select
 				name="role"

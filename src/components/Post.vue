@@ -32,7 +32,7 @@ export default {
 			if (this.bookmarked) {
 				axios
 					.post(
-						`http://localhost:2020/api/v1/saves/${this.post._id}`,
+						`${import.meta.env.VITE_API_URL}/api/v1/saves/${this.post._id}`,
 						{},
 						config
 					)
@@ -42,7 +42,10 @@ export default {
 					.catch(err => console.log(err));
 			} else if (!this.bookmarked) {
 				axios
-					.delete(`http://localhost:2020/api/v1/saves/${this.post._id}`, config)
+					.delete(
+						`${import.meta.env.VITE_API_URL}/api/v1/saves/${this.post._id}`,
+						config
+					)
 					.then(res => {
 						console.log(res);
 					})
@@ -58,7 +61,10 @@ export default {
 				},
 			};
 			axios
-				.delete(`http://localhost:2020/api/v1/posts/${this.post._id}`, config)
+				.delete(
+					`${import.meta.env.VITE_API_URL}/api/v1/posts/${this.post._id}`,
+					config
+				)
 				.then(res => {
 					console.log(res);
 					this.updateFunc();
@@ -75,7 +81,7 @@ export default {
 			},
 		};
 		axios
-			.get(`http://localhost:2020/api/v1/users/${this.post.author}`)
+			.get(`${import.meta.env.VITE_API_URL}/api/v1/users/${this.post.author}`)
 			.then(res => {
 				this.authorName = res.data.username;
 				this.authorId = res.data._id;
@@ -85,7 +91,7 @@ export default {
 			});
 		if (localStorage.getItem("access")) {
 			axios
-				.get("http://localhost:2020/api/v1/profile", config)
+				.get(`${import.meta.env.VITE_API_URL}/api/v1/profile`, config)
 				.then(res => {
 					this.loggedIn = true;
 					if (this.authorId === res.data._id || res.data.role === "admin")
@@ -101,47 +107,43 @@ export default {
 </script>
 
 <template>
-	<div class="animate-fadeIn">
-		<div
-			class="relative hover:scale-[1.02] transition-transform h-full"
-			v-if="this.authorName"
+	<div
+		class="relative hover:scale-[1.02] transition-transform h-full animate-fadeIn"
+		v-if="this.authorName"
+	>
+		<RouterLink
+			:to="'/blog/' + this.post._id"
+			class="w-full h-full rounded-sm shadow-sm overflow-hidden"
 		>
-			<RouterLink
-				:to="'/blog/' + this.post._id"
-				class="w-full h-full rounded-sm shadow-sm overflow-hidden"
+			<li
+				class="text-center bg-white p-4 flex flex-col justify-between gap-1 min-h-[160px]"
 			>
-				<li
-					class="text-center bg-white p-4 flex flex-col justify-between gap-1 min-h-[160px]"
-				>
-					<p class="uppercase">
-						published
-						<span class="font-medium text-blue">{{
-							rt(this.post.created)
-						}}</span>
-					</p>
-					<h2 class="text-3xl font-bold">{{ this.post.title }}</h2>
-					<p class="uppercase">
-						By <span class="font-medium">{{ this.authorName }}</span>
-					</p>
-				</li>
-			</RouterLink>
-			<button
-				class="text-2xl max-w-fit absolute right-3 bottom-1 hover:scale-105 active:scale-90 transition-transform"
-				type="button"
-				@click="bookmarkPost"
-				v-if="!error && loggedIn"
-			>
-				<font-awesome-icon icon="fa-solid fa-bookmark" v-if="this.bookmarked" />
-				<font-awesome-icon icon="fa-regular fa-bookmark" v-else />
-			</button>
-			<button
-				class="text-2xl max-w-fit absolute right-3 top-2 hover:scale-105 active:scale-90 transition-transform text-red-700"
-				type="button"
-				@click="deletePost"
-				v-if="!error && loggedIn && deleteable"
-			>
-				<font-awesome-icon icon="fa-solid fa-trash-can" />
-			</button>
-		</div>
+				<p class="uppercase">
+					published
+					<span class="font-medium text-blue">{{ rt(this.post.created) }}</span>
+				</p>
+				<h2 class="text-3xl font-bold">{{ this.post.title }}</h2>
+				<p class="uppercase">
+					By <span class="font-medium">{{ this.authorName }}</span>
+				</p>
+			</li>
+		</RouterLink>
+		<button
+			class="text-2xl max-w-fit absolute right-3 bottom-1 hover:scale-105 active:scale-90 transition-transform"
+			type="button"
+			@click="bookmarkPost"
+			v-if="!error && loggedIn"
+		>
+			<font-awesome-icon icon="fa-solid fa-bookmark" v-if="this.bookmarked" />
+			<font-awesome-icon icon="fa-regular fa-bookmark" v-else />
+		</button>
+		<button
+			class="text-2xl max-w-fit absolute left-3 top-2 hover:scale-105 active:scale-90 transition-all text-red opacity-50 hover:opacity-100"
+			type="button"
+			@click="deletePost"
+			v-if="!error && loggedIn && deleteable"
+		>
+			<font-awesome-icon icon="fa-solid fa-trash-can" />
+		</button>
 	</div>
 </template>

@@ -18,23 +18,22 @@ export default {
 				localStorage.removeItem("access");
 			}
 		},
-		checkToken: function (start) {
-			if (!start) {
+		checkToken: function () {
+			if (!this.data) {
 				clearInterval(checkInterval);
 				return;
 			}
-			if (
-				this.data &&
-				this.data.token.expiration <=
-					parseInt(Date.now().toString().slice(0, 10))
-			)
-				localStorage.removeItem("access");
 			var checkInterval = setInterval(() => {
-				console.log(this.data);
 				if (this.data) {
-					console.log(`${this.data.token.expiration} - ${Date.now()}`);
+					if (
+						this.data?.token?.expiration <=
+						parseInt(Date.now().toString().slice(0, 10))
+					) {
+						console.log("Token Expirered");
+						this.setData(null);
+					} else console.log("Token Valid");
 				}
-			}, 5000);
+			}, 10000);
 		},
 	},
 	provide() {
@@ -45,11 +44,10 @@ export default {
 	},
 	watch: {
 		data(newData) {
-			this.checkToken(newData ? true : false);
+			this.checkToken();
 		},
 	},
 	created() {
-		console.log(import.meta.env.VITE_API_URL);
 		this.checkToken(true);
 	},
 };

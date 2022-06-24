@@ -30,7 +30,7 @@ export default {
 		},
 		getPosts: function () {
 			axios
-				.get("http://localhost:2020/api/v1/posts?offset=0&limit=10")
+				.get(`${import.meta.env.VITE_API_URL}/api/v1/posts?offset=0&limit=10`)
 				.then(res => {
 					this.data = res.data;
 					console.log(res.data);
@@ -55,7 +55,7 @@ export default {
 				author: this.authorId,
 			};
 			axios
-				.post("http://localhost:2020/api/v1/posts", reqBody, config)
+				.post(`${import.meta.env.VITE_API_URL}/api/v1/posts`, reqBody, config)
 				.then(() => this.getPosts())
 				.catch(err => console.log(err));
 		},
@@ -71,7 +71,7 @@ export default {
 		};
 		if (localStorage.getItem("access")) {
 			axios
-				.get("http://localhost:2020/api/v1/profile", config)
+				.get(`${import.meta.env.VITE_API_URL}/api/v1/profile`, config)
 				.then(res => {
 					this.authorId = res.data._id;
 					this.role = res.data.role;

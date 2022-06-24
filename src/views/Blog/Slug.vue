@@ -2,7 +2,7 @@
 import axios from "axios";
 import dateToRealtime from "../../util/dateToRealtime";
 import { RouterLink } from "vue-router";
-const baseApi = "http://localhost:2020";
+const baseApi = "${import.meta.env.VITE_API_URL}";
 export default {
 	components: { RouterLink },
 	data() {
@@ -28,7 +28,7 @@ export default {
 			if (this.bookmarked) {
 				axios
 					.post(
-						`http://localhost:2020/api/v1/saves/${this.data._id}`,
+						`${import.meta.env.VITE_API_URL}/api/v1/saves/${this.data._id}`,
 						{},
 						config
 					)
@@ -38,7 +38,10 @@ export default {
 					.catch(err => console.log(err));
 			} else if (!this.bookmarked) {
 				axios
-					.delete(`http://localhost:2020/api/v1/saves/${this.data._id}`, config)
+					.delete(
+						`${import.meta.env.VITE_API_URL}/api/v1/saves/${this.data._id}`,
+						config
+					)
 					.then(res => {
 						console.log(res);
 					})
@@ -60,7 +63,9 @@ export default {
 				this.data = res.data;
 				console.log(res.data);
 				axios
-					.get(`http://localhost:2020/api/v1/users/${res.data.author}`)
+					.get(
+						`${import.meta.env.VITE_API_URL}/api/v1/users/${res.data.author}`
+					)
 					.then(res => (this.authorName = res.data.username));
 			})
 			.catch(err => {
@@ -68,7 +73,7 @@ export default {
 			});
 		if (localStorage.getItem("access")) {
 			axios
-				.get("http://localhost:2020/api/v1/profile", config)
+				.get(`${import.meta.env.VITE_API_URL}/api/v1/profile`, config)
 				.then(res => {
 					this.loggedIn = true;
 					if (res.data.saves.includes(this.data._id)) this.bookmarked = true;
